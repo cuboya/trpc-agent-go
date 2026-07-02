@@ -7328,11 +7328,6 @@ func TestSandboxProfileAndBackendConfigBranches(t *testing.T) {
 		sandboxexec.BackendLinuxBubblewrap,
 		sandboxBackendFromConfig(" LINUX-BUBBLEWRAP "),
 	)
-	require.Equal(
-		t,
-		sandboxexec.BackendMacOSSandboxExec,
-		sandboxBackendFromConfig(" MACOS-SANDBOX-EXEC "),
-	)
 	require.Equal(t, sandboxexec.BackendAuto, sandboxBackendFromConfig("unknown"))
 
 	enabledReadOnly := sandboxPermissionProfileFromConfig(sandboxCodeExecutorOptions{

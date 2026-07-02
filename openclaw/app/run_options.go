@@ -60,7 +60,6 @@ const (
 
 	sandboxBackendAuto            = "auto"
 	sandboxBackendLinuxBubblewrap = "linux-bubblewrap"
-	sandboxBackendMacOSSandbox    = "macos-sandbox-exec"
 
 	sandboxProfileWorkspaceWrite = "workspace_write"
 	sandboxProfileReadOnly       = "read_only"
@@ -2468,11 +2467,11 @@ func convertSandboxCodeExecutorConfig(
 	backend := strings.ToLower(strings.TrimSpace(cfg.Backend))
 	if backend != "" {
 		switch backend {
-		case sandboxBackendAuto, sandboxBackendLinuxBubblewrap, sandboxBackendMacOSSandbox:
+		case sandboxBackendAuto, sandboxBackendLinuxBubblewrap:
 			out.Backend = backend
 		default:
 			return sandboxCodeExecutorOptions{}, fmt.Errorf(
-				"sandbox.backend %q: want auto|linux-bubblewrap|macos-sandbox-exec",
+				"sandbox.backend %q: want auto|linux-bubblewrap",
 				cfg.Backend,
 			)
 		}

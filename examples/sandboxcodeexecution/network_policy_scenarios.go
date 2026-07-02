@@ -12,8 +12,6 @@ package main
 import (
 	"context"
 	"fmt"
-	"os"
-	"runtime"
 	"time"
 
 	"trpc.group/trpc-go/trpc-agent-go/codeexecutor"
@@ -164,7 +162,7 @@ func expectNetworkConnected(ctx context.Context, rt *sandbox.Runtime, ws codeexe
 
 func runNetworkProbe(ctx context.Context, rt *sandbox.Runtime, ws codeexecutor.Workspace) (string, error) {
 	res, err := rt.RunProgram(ctx, ws, codeexecutor.RunProgramSpec{
-		Cmd:     networkProbePythonCommand(),
+		Cmd:     "python3",
 		Args:    []string{"-c", networkPolicyProbeScript},
 		Cwd:     codeexecutor.DirWork,
 		Timeout: 2 * time.Second,
@@ -176,15 +174,4 @@ func runNetworkProbe(ctx context.Context, rt *sandbox.Runtime, ws codeexecutor.W
 		return "", fmt.Errorf("network probe failed: stdout=%q stderr=%q", redact(res.Stdout), redact(res.Stderr))
 	}
 	return res.Stdout, nil
-}
-
-func networkProbePythonCommand() string {
-	if runtime.GOOS != "darwin" {
-		return "python3"
-	}
-	const commandLineToolsPython = "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/bin/python3"
-	if _, err := os.Stat(commandLineToolsPython); err == nil {
-		return commandLineToolsPython
-	}
-	return "python3"
 }
